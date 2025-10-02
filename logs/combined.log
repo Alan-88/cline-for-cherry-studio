@@ -24,3 +24,48 @@
 2025-10-02T19:25:15.453Z [INFO] MCP server stopped
 2025-10-02T19:25:15.453Z [INFO] MCP server stopped successfully
 2025-10-02T19:25:15.453Z [INFO] Graceful shutdown completed
+2025-10-02T19:46:13.590Z [INFO] Initializing Cline for Cherry Studio plugin...
+2025-10-02T19:46:13.601Z [INFO] Configuration loaded and validated {"port":3001,"host":"localhost","autoStart":true}
+2025-10-02T19:46:13.603Z [INFO] Tool registered: ping
+2025-10-02T19:46:13.603Z [INFO] Tool registered: echo
+2025-10-02T19:46:13.603Z [INFO] Tool registered: server_info
+2025-10-02T19:46:13.603Z [INFO] Tool registered: read_file
+2025-10-02T19:46:13.603Z [INFO] Tool registered: write_file
+2025-10-02T19:46:13.603Z [INFO] Tool registered: list_files
+2025-10-02T19:46:13.603Z [INFO] Tool registered: create_directory
+2025-10-02T19:46:13.604Z [INFO] Tool registered: delete_file
+2025-10-02T19:46:13.604Z [INFO] Tool registered: execute_shell_command
+2025-10-02T19:46:13.604Z [INFO] Tool registered: get_system_info
+2025-10-02T19:46:13.604Z [INFO] Tool registered: check_command_exists
+2025-10-02T19:46:13.604Z [INFO] All tools registered successfully {"basicTools":3,"fileTools":5,"shellTools":3,"total":11}
+2025-10-02T19:46:13.613Z [INFO] MCP server started on localhost:3001
+2025-10-02T19:46:13.613Z [INFO] MCP server started successfully
+2025-10-02T19:46:13.613Z [INFO] Server status {"running":true,"port":3001,"uptime":"12ms"}
+2025-10-02T19:46:13.613Z [INFO] Plugin initialized successfully
+2025-10-02T19:46:13.613Z [INFO] Plugin started successfully
+2025-10-02T19:46:13.613Z [INFO] MCP server is running and ready to accept connections
+2025-10-02T19:46:13.613Z [INFO] Test with: curl http://localhost:3001/health
+2025-10-02T19:50:52.401Z [DEBUG] HTTP POST /mcp {"ip":"::1","userAgent":"curl/8.7.1"}
+2025-10-02T19:50:52.402Z [DEBUG] Request received {"method":"tools/list","requestId":"1","params":"{}"}
+2025-10-02T19:50:52.402Z [DEBUG] Response sent {"method":"tools/list","requestId":"1","duration":"0ms","resultType":"object"}
+2025-10-02T19:50:55.496Z [DEBUG] HTTP POST /mcp {"ip":"::1","userAgent":"curl/8.7.1"}
+2025-10-02T19:50:55.497Z [DEBUG] Request received {"method":"tools/call","requestId":"2","params":"{\"name\":\"execute_shell_command\",\"arguments\":{\"command\":\"echo\",\"args\":[\"Hello from shell tool!\"]}}"}
+2025-10-02T19:50:55.497Z [INFO] Executing tool: execute_shell_command {"params":{"command":"echo","args":["Hello from shell tool!"]}}
+2025-10-02T19:50:55.498Z [INFO] execute_shell_command {"command":"echo","cmdArgs":["Hello from shell tool!"],"cwd":"/Users/alan/Programming/CherryStudio&Cline","timeout":30000}
+2025-10-02T19:50:55.505Z [INFO] execute_shell_command success {"command":"echo","exitCode":0,"stdoutLength":22,"stderrLength":0}
+2025-10-02T19:50:55.505Z [INFO] Tool completed: execute_shell_command {"resultType":"object"}
+2025-10-02T19:50:55.506Z [DEBUG] Response sent {"method":"tools/call","requestId":"2","duration":"10ms","resultType":"object"}
+2025-10-02T19:51:00.233Z [DEBUG] HTTP POST /mcp {"ip":"::1","userAgent":"curl/8.7.1"}
+2025-10-02T19:51:00.233Z [DEBUG] Request received {"method":"tools/call","requestId":"3","params":"{\"name\":\"get_system_info\",\"arguments\":{}}"}
+2025-10-02T19:51:00.233Z [INFO] Executing tool: get_system_info {"params":{}}
+2025-10-02T19:51:00.233Z [INFO] get_system_info
+2025-10-02T19:51:00.255Z [INFO] get_system_info success {"platform":"darwin","arch":"arm64","nodeVersion":"v22.17.0","workingDirectory":"/Users/alan/Programming/CherryStudio&Cline","environment":"development","osInfo":"ProductName:\t\tmacOS\nProductVersion:\t\t26.0\nBuildVersion:\t\t25A354"}
+2025-10-02T19:51:00.256Z [INFO] Tool completed: get_system_info {"resultType":"object"}
+2025-10-02T19:51:00.256Z [DEBUG] Response sent {"method":"tools/call","requestId":"3","duration":"23ms","resultType":"object"}
+2025-10-02T19:51:05.303Z [DEBUG] HTTP POST /mcp {"ip":"::1","userAgent":"curl/8.7.1"}
+2025-10-02T19:51:05.304Z [DEBUG] Request received {"method":"tools/call","requestId":"4","params":"{\"name\":\"check_command_exists\",\"arguments\":{\"command\":\"node\"}}"}
+2025-10-02T19:51:05.304Z [INFO] Executing tool: check_command_exists {"params":{"command":"node"}}
+2025-10-02T19:51:05.304Z [INFO] check_command_exists {"command":"node","workingDirectory":"/Users/alan/Programming/CherryStudio&Cline"}
+2025-10-02T19:51:05.314Z [INFO] check_command_exists result {"command":"node","exists":true,"path":"/Users/alan/.nvm/versions/node/v22.17.0/bin/node"}
+2025-10-02T19:51:05.314Z [INFO] Tool completed: check_command_exists {"resultType":"object"}
+2025-10-02T19:51:05.314Z [DEBUG] Response sent {"method":"tools/call","requestId":"4","duration":"10ms","resultType":"object"}

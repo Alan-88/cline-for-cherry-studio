@@ -2,9 +2,12 @@
  * Main entry point for Cline for Cherry Studio MCP Server
  */
 
-import { MCPServer } from './server/mcp-server.js';
-import { configManager } from './utils/config.js';
-import { logger } from './utils/logger.js';
+import { MCPServer } from './server/mcp-server';
+import { configManager } from './utils/config';
+import { logger } from './utils/logger';
+import { basicTools } from './tools/basic-tools';
+import { fileTools } from './tools/file-tools';
+import { shellTools } from './tools/shell-tools';
 
 /**
  * Main plugin class
@@ -177,97 +180,35 @@ export class ClinePlugin {
   }
 
   /**
-   * Register basic tools for testing
+   * Register all tools
    */
   private async registerBasicTools(): Promise<void> {
     if (!this.server) {
       throw new Error('Server not initialized');
     }
 
-    // Ping tool
-    this.server.registerTool({
-      name: 'ping',
-      description: 'Simple ping tool to test connectivity',
-      inputSchema: {
-        type: 'object',
-        properties: {
-          message: {
-            type: 'string',
-            description: 'Optional message to echo back'
-          }
-        }
-      },
-      handler: async (input: any) => {
-        return {
-          status: 'pong',
-          timestamp: new Date().toISOString(),
-          message: input.message || 'Hello from Cline MCP Server!',
-          server: 'Cline for Cherry Studio'
-        };
-      }
-    });
+    // Register basic tools
+    for (const tool of basicTools) {
+      this.server.registerTool(tool);
+    }
 
-    // Echo tool
-    this.server.registerTool({
-      name: 'echo',
-      description: 'Echo back the input message',
-      inputSchema: {
-        type: 'object',
-        properties: {
-          message: {
-            type: 'string',
-            description: 'Message to echo back'
-          }
-        },
-        required: ['message']
-      },
-      handler: async (input: any) => {
-        return {
-          echo: input.message,
-          timestamp: new Date().toISOString(),
-          length: input.message.length
-        };
-      }
-    });
+    // Register file tools
+    for (const tool of fileTools) {
+      this.server.registerTool(tool);
+    }
 
-    // Server info tool
-    this.server.registerTool({
-      name: 'server_info',
-      description: 'Get server information and status',
-      inputSchema: {
-        type: 'object',
-        properties: {}
-      },
-      handler: async () => {
-        const status = this.server!.getStatus();
-        const config = configManager.getConfig();
-        
-        return {
-          server: {
-            name: 'Cline for Cherry Studio MCP Server',
-            version: '0.1.0',
-            status: status,
-            config: {
-              port: config.server.port,
-              host: config.server.host,
-              tools: {
-                file: config.tools.file.enabled,
-                shell: config.tools.shell.enabled,
-                edit: config.tools.edit.enabled
-              }
-            }
-          },
-          system: {
-            platform: process.platform,
-            nodeVersion: process.version,
-            uptime: process.uptime(),
-            memory: process.memoryUsage()
-          }
-        };
-      }
-    });
+    // Register shell tools
+    for (const tool of shellTools) {
+      this.server.registerTool(tool);
+    }
 
-    logger.info('Basic tools registered successfully');
+    const totalTools = basicTools.length + fileTools.length + shellTools.length;
+    logger.info(`All tools registered successfully`, {
+      basicTools: basicTools.length,
+      fileTools: fileTools.length,
+      shellTools: shellTools.length,
+      total: totalTools
+    });
   }
 
   /**
@@ -343,7 +284,7 @@ export async function initializePlugin(): Promise<ClinePlugin> {
 }
 
 // Auto-initialize if this module is run directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (require.main === module) {
   initializePlugin()
     .then(() => {
       logger.info('Plugin started successfully');

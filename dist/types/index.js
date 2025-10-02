@@ -1,8 +1,11 @@
+"use strict";
 /**
  * Core type definitions for Cline for Cherry Studio MCP server
  */
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PermissionError = exports.FileNotFoundError = exports.SecurityError = exports.ValidationError = exports.MCPError = void 0;
 // Error types
-export class MCPError extends Error {
+class MCPError extends Error {
     code;
     data;
     constructor(code, message, data) {
@@ -12,7 +15,8 @@ export class MCPError extends Error {
         this.name = 'MCPError';
     }
 }
-export class ValidationError extends MCPError {
+exports.MCPError = MCPError;
+class ValidationError extends MCPError {
     field;
     constructor(message, field) {
         super(-32602, message, { field });
@@ -20,7 +24,8 @@ export class ValidationError extends MCPError {
         this.name = 'ValidationError';
     }
 }
-export class SecurityError extends MCPError {
+exports.ValidationError = ValidationError;
+class SecurityError extends MCPError {
     path;
     constructor(message, path) {
         super(-32000, message, { path });
@@ -28,16 +33,19 @@ export class SecurityError extends MCPError {
         this.name = 'SecurityError';
     }
 }
-export class FileNotFoundError extends MCPError {
+exports.SecurityError = SecurityError;
+class FileNotFoundError extends MCPError {
     constructor(path) {
         super(-32001, `File not found: ${path}`, { path });
         this.name = 'FileNotFoundError';
     }
 }
-export class PermissionError extends MCPError {
+exports.FileNotFoundError = FileNotFoundError;
+class PermissionError extends MCPError {
     constructor(operation, path) {
         super(-32002, `Permission denied for ${operation} on ${path}`, { operation, path });
         this.name = 'PermissionError';
     }
 }
+exports.PermissionError = PermissionError;
 //# sourceMappingURL=index.js.map

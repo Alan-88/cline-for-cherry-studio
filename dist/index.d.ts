@@ -44,7 +44,7 @@ export declare class ClinePlugin {
     /**
      * Get configuration
      */
-    getConfig(): import("./types/index.js").PluginConfig;
+    getConfig(): import("./types").PluginConfig;
     /**
      * Update configuration
      */
@@ -52,9 +52,9 @@ export declare class ClinePlugin {
     /**
      * Get recent logs
      */
-    getRecentLogs(count?: number): import("./types/index.js").LogEntry[];
+    getRecentLogs(count?: number): import("./types").LogEntry[];
     /**
-     * Register basic tools for testing
+     * Register all tools
      */
     private registerBasicTools;
     /**

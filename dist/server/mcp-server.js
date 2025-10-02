@@ -1,12 +1,18 @@
-import express from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
-import { MCPError } from '../types/index.js';
-import { logger } from '../utils/logger.js';
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MCPServer = void 0;
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+const helmet_1 = __importDefault(require("helmet"));
+const index_js_1 = require("../types/index.js");
+const logger_js_1 = require("../utils/logger.js");
 /**
  * MCP Server implementation for Cline for Cherry Studio
  */
-export class MCPServer {
+class MCPServer {
     app;
     server = null;
     tools = new Map();
@@ -16,26 +22,26 @@ export class MCPServer {
     errorCount = 0;
     constructor(config) {
         this.config = config;
-        this.app = express();
+        this.app = (0, express_1.default)();
         this.setupMiddleware();
         this.setupRoutes();
     }
     setupMiddleware() {
         // Security middleware
-        this.app.use(helmet({
+        this.app.use((0, helmet_1.default)({
             contentSecurityPolicy: false, // Allow local development
         }));
         // CORS for local development
-        this.app.use(cors({
+        this.app.use((0, cors_1.default)({
             origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
             credentials: true
         }));
         // Body parsing
-        this.app.use(express.json({ limit: '10mb' }));
-        this.app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+        this.app.use(express_1.default.json({ limit: '10mb' }));
+        this.app.use(express_1.default.urlencoded({ extended: true, limit: '10mb' }));
         // Request logging
         this.app.use((req, _res, next) => {
-            logger.debug(`HTTP ${req.method} ${req.path}`, {
+            logger_js_1.logger.debug(`HTTP ${req.method} ${req.path}`, {
                 ip: req.ip,
                 userAgent: req.get('User-Agent')
             });
@@ -79,7 +85,7 @@ export class MCPServer {
                 res.json(response);
             }
             catch (error) {
-                logger.error('MCP request failed', error instanceof Error ? error : new Error(String(error)));
+                logger_js_1.logger.error('MCP request failed', error instanceof Error ? error : new Error(String(error)));
                 const errorResponse = {
                     jsonrpc: '2.0',
                     id: req.body?.id || null,
@@ -104,7 +110,7 @@ export class MCPServer {
         // Error handling
         this.app.use((err, _req, res, _next) => {
             this.errorCount++;
-            logger.error('Unhandled error in express', err);
+            logger_js_1.logger.error('Unhandled error in express', err);
             res.status(500).json({
                 error: 'Internal server error',
                 message: err.message
@@ -124,10 +130,10 @@ export class MCPServer {
         try {
             // Validate JSON-RPC request
             if (!this.isValidRequest(request)) {
-                throw new MCPError(-32600, 'Invalid Request');
+                throw new index_js_1.MCPError(-32600, 'Invalid Request');
             }
             const { method, params, id } = request;
-            logger.logRequest(method, params, String(id));
+            logger_js_1.logger.logRequest(method, params, String(id));
             let result;
             switch (method) {
                 case 'initialize':
@@ -143,9 +149,9 @@ export class MCPServer {
                     result = { status: 'pong', timestamp: new Date().toISOString() };
                     break;
                 default:
-                    throw new MCPError(-32601, `Method not found: ${method}`);
+                    throw new index_js_1.MCPError(-32601, `Method not found: ${method}`);
             }
-            logger.logResponse(method, result, String(id), Date.now() - startTime);
+            logger_js_1.logger.logResponse(method, result, String(id), Date.now() - startTime);
             return {
                 jsonrpc: '2.0',
                 id,
@@ -154,14 +160,14 @@ export class MCPServer {
         }
         catch (error) {
             this.errorCount++;
-            logger.logError(request.method, error instanceof Error ? error : new Error(String(error)), String(request.id));
+            logger_js_1.logger.logError(request.method, error instanceof Error ? error : new Error(String(error)), String(request.id));
             return {
                 jsonrpc: '2.0',
                 id: request.id,
                 error: {
-                    code: error instanceof MCPError ? error.code : -32603,
+                    code: error instanceof index_js_1.MCPError ? error.code : -32603,
                     message: error instanceof Error ? error.message : 'Unknown error',
-                    data: error instanceof MCPError ? error.data : undefined
+                    data: error instanceof index_js_1.MCPError ? error.data : undefined
                 }
             };
         }
@@ -174,7 +180,7 @@ export class MCPServer {
             (request.id === null || typeof request.id === 'string' || typeof request.id === 'number'));
     }
     async handleInitialize(params) {
-        logger.info('MCP server initialized', params);
+        logger_js_1.logger.info('MCP server initialized', params);
         return {
             protocolVersion: '2024-11-05',
             capabilities: {
@@ -197,21 +203,21 @@ export class MCPServer {
     }
     async handleToolsCall(params) {
         if (!params || typeof params.name !== 'string') {
-            throw new MCPError(-32602, 'Invalid tool call parameters');
+            throw new index_js_1.MCPError(-32602, 'Invalid tool call parameters');
         }
         const tool = this.tools.get(params.name);
         if (!tool) {
-            throw new MCPError(-32601, `Tool not found: ${params.name}`);
+            throw new index_js_1.MCPError(-32601, `Tool not found: ${params.name}`);
         }
         try {
-            logger.info(`Executing tool: ${params.name}`, { params: params.arguments });
+            logger_js_1.logger.info(`Executing tool: ${params.name}`, { params: params.arguments });
             const result = await tool.handler(params.arguments || {});
-            logger.info(`Tool completed: ${params.name}`, { resultType: typeof result });
+            logger_js_1.logger.info(`Tool completed: ${params.name}`, { resultType: typeof result });
             return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
         }
         catch (error) {
-            logger.error(`Tool failed: ${params.name}`, error instanceof Error ? error : new Error(String(error)));
-            throw new MCPError(-32000, `Tool execution failed: ${error instanceof Error ? error.message : String(error)}`);
+            logger_js_1.logger.error(`Tool failed: ${params.name}`, error instanceof Error ? error : new Error(String(error)));
+            throw new index_js_1.MCPError(-32000, `Tool execution failed: ${error instanceof Error ? error.message : String(error)}`);
         }
     }
     getCapabilities() {
@@ -229,7 +235,7 @@ export class MCPServer {
      */
     registerTool(tool) {
         this.tools.set(tool.name, tool);
-        logger.info(`Tool registered: ${tool.name}`);
+        logger_js_1.logger.info(`Tool registered: ${tool.name}`);
     }
     /**
      * Unregister a tool
@@ -237,7 +243,7 @@ export class MCPServer {
     unregisterTool(name) {
         const removed = this.tools.delete(name);
         if (removed) {
-            logger.info(`Tool unregistered: ${name}`);
+            logger_js_1.logger.info(`Tool unregistered: ${name}`);
         }
         return removed;
     }
@@ -248,16 +254,16 @@ export class MCPServer {
         return new Promise((resolve, reject) => {
             try {
                 this.server = this.app.listen(this.config.server.port, this.config.server.host, () => {
-                    logger.info(`MCP server started on ${this.config.server.host}:${this.config.server.port}`);
+                    logger_js_1.logger.info(`MCP server started on ${this.config.server.host}:${this.config.server.port}`);
                     resolve();
                 });
                 this.server.on('error', (error) => {
-                    logger.error('Server error', error);
+                    logger_js_1.logger.error('Server error', error);
                     reject(error);
                 });
             }
             catch (error) {
-                logger.error('Failed to start server', error instanceof Error ? error : new Error(String(error)));
+                logger_js_1.logger.error('Failed to start server', error instanceof Error ? error : new Error(String(error)));
                 reject(error);
             }
         });
@@ -269,7 +275,7 @@ export class MCPServer {
         return new Promise((resolve) => {
             if (this.server) {
                 this.server.close(() => {
-                    logger.info('MCP server stopped');
+                    logger_js_1.logger.info('MCP server stopped');
                     this.server = null;
                     resolve();
                 });
@@ -298,4 +304,5 @@ export class MCPServer {
         return Array.from(this.tools.values());
     }
 }
+exports.MCPServer = MCPServer;
 //# sourceMappingURL=mcp-server.js.map
