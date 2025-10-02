@@ -30,10 +30,17 @@
     - ✅ 已初始化本地 Git 仓库并推送初始文件（TODO.md 和 start_prompt.md）
     - ✅ 仓库地址：https://github.com/Alan-88/cline-for-cherry-studio
 
-- [ ] **任务**: 深入研究 vscode-mcp-server 项目。
+- [x] **任务**: 深入研究 vscode-mcp-server 项目。
   - **预期产出**: 一份研究报告，包含关键代码片段和架构图。
   - **验证方法**: 能够解释清楚它的服务器是如何工作的，以及哪些部分可以借鉴。
   - **文档更新**: 在 `## 1.2` 下记录研究发现的可复用的模式和代码。
+    - ✅ **2025-10-03 完成**: 完成 vscode-mcp-server 项目深度研究
+    - ✅ 创建详细研究报告 `research-report-vscode-mcp-server.md`
+    - ✅ 分析了核心架构：Express + MCP SDK + TypeScript
+    - ✅ 识别了 5 大类工具：文件、编辑、诊断、符号、Shell
+    - ✅ 提取了可复用的模式：服务器生命周期、工具配置、终端管理、日志系统
+    - ✅ 确定了技术选型：Express.js + @modelcontextprotocol/sdk + React
+    - ✅ 明确了适配需求：VSCode API → Cherry Studio API
 
 - [ ] **任务**: 设计我们的 MCP 服务器架构。
   - **预期产出**: 一份架构设计文档，包含技术选型和实现方案。
