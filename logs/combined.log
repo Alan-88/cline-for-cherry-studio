@@ -1,0 +1,26 @@
+2025-10-02T19:23:50.577Z [INFO] Initializing Cline for Cherry Studio plugin...
+2025-10-02T19:23:50.580Z [INFO] Configuration loaded and validated {"port":3001,"host":"localhost","autoStart":true}
+2025-10-02T19:23:50.583Z [INFO] Tool registered: ping
+2025-10-02T19:23:50.583Z [INFO] Tool registered: echo
+2025-10-02T19:23:50.583Z [INFO] Tool registered: server_info
+2025-10-02T19:23:50.583Z [INFO] Basic tools registered successfully
+2025-10-02T19:23:50.591Z [INFO] MCP server started on localhost:3001
+2025-10-02T19:23:50.591Z [INFO] MCP server started successfully
+2025-10-02T19:23:50.591Z [INFO] Server status {"running":true,"port":3001,"uptime":"11ms"}
+2025-10-02T19:23:50.592Z [INFO] Plugin initialized successfully
+2025-10-02T19:23:50.593Z [INFO] Plugin started successfully
+2025-10-02T19:23:50.593Z [INFO] MCP server is running and ready to accept connections
+2025-10-02T19:23:50.593Z [INFO] Test with: curl http://localhost:3001/health
+2025-10-02T19:24:54.049Z [DEBUG] HTTP GET /health {"ip":"::1","userAgent":"curl/8.7.1"}
+2025-10-02T19:25:02.493Z [DEBUG] HTTP GET /info {"ip":"::1","userAgent":"curl/8.7.1"}
+2025-10-02T19:25:04.411Z [DEBUG] HTTP GET /tools {"ip":"::1","userAgent":"curl/8.7.1"}
+2025-10-02T19:25:06.991Z [DEBUG] HTTP POST /mcp {"ip":"::1","userAgent":"curl/8.7.1"}
+2025-10-02T19:25:06.992Z [DEBUG] Request received {"method":"tools/call","requestId":"test-1","params":"{\"name\":\"ping\",\"arguments\":{\"message\":\"Hello World\"}}"}
+2025-10-02T19:25:06.992Z [INFO] Executing tool: ping {"params":{"message":"Hello World"}}
+2025-10-02T19:25:06.992Z [INFO] Tool completed: ping {"resultType":"object"}
+2025-10-02T19:25:06.993Z [DEBUG] Response sent {"method":"tools/call","requestId":"test-1","duration":"1ms","resultType":"object"}
+2025-10-02T19:25:15.452Z [INFO] Received SIGTERM, starting graceful shutdown...
+2025-10-02T19:25:15.452Z [INFO] Graceful shutdown initiated by SIGTERM
+2025-10-02T19:25:15.453Z [INFO] MCP server stopped
+2025-10-02T19:25:15.453Z [INFO] MCP server stopped successfully
+2025-10-02T19:25:15.453Z [INFO] Graceful shutdown completed

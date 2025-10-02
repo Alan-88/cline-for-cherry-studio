@@ -42,16 +42,45 @@
     - ✅ 确定了技术选型：Express.js + @modelcontextprotocol/sdk + React
     - ✅ 明确了适配需求：VSCode API → Cherry Studio API
 
-- [ ] **任务**: 设计我们的 MCP 服务器架构。
+- [x] **任务**: 设计我们的 MCP 服务器架构。
   - **预期产出**: 一份架构设计文档，包含技术选型和实现方案。
   - **验证方法**: 架构设计能够支持所有 Cline 的核心功能。
   - **文档更新**: 在 `## 1.3` 下记录架构决策和设计细节。
+    - ✅ **2025-10-03 完成**: 完成 MCP 服务器架构设计
+    - ✅ 创建详细架构设计文档 `mcp-architecture.md`
+    - ✅ **技术栈确定**: Express.js + @modelcontextprotocol/sdk + TypeScript + React
+    - ✅ **端口选择**: 3001 (避免与 vscode-mcp-server 的 3000 端口冲突)
+    - ✅ **组件架构**: 插件入口 → MCP 服务器 → 工具层 → 系统层
+    - ✅ **核心工具设计**: read_file, write_file, list_files, execute_command, create_directory
+    - ✅ **安全策略**: 仅本地访问 (127.0.0.1), 工作目录限制, 命令确认机制
+    - ✅ **项目结构**: 完整的 src/ 目录结构设计，包含 server/, ui/, types/, utils/
+    - ✅ **配置系统**: 详细的 PluginConfig 接口设计，包含服务器、工具、UI、安全配置
+    - ✅ **通信协议**: MCP JSON-RPC 2.0 协议规范
+    - ✅ **性能优化**: 缓存、连接池、异步处理等优化策略
+    - ✅ **错误处理**: 完整的错误处理和恢复机制
+    - ✅ **测试策略**: 单元测试、集成测试、安全测试
 
 ### 1.2. 后端 MCP 服务器实现
-- [ ] **任务**: 在插件中集成一个轻量级的 MCP 服务器。
+- [x] **任务**: 在插件中集成一个轻量级的 MCP 服务器。
   - **预期产出**: 插件启动时，能够在本地（如 `localhost:3001`）启动一个 HTTP 服务器。
   - **验证方法**: 使用 Postman 或 curl 测试服务器响应。
   - **文档更新**: 在 `## 1.3` 下记录服务器技术选型和实现细节。
+    - ✅ **2025-10-03 完成**: 成功集成轻量级 MCP 服务器
+    - ✅ **技术实现**: Express.js + TypeScript + JSON-RPC 2.0
+    - ✅ **服务器配置**: localhost:3001，支持 CORS、安全中间件
+    - ✅ **核心端点**: 
+      - `/health` - 健康检查
+      - `/info` - 服务器信息
+      - `/tools` - 工具列表
+      - `/mcp` - JSON-RPC 2.0 主端点
+    - ✅ **基础工具**: ping, echo, server_info
+    - ✅ **测试验证**: 
+      - 健康检查: `{"status":"healthy","timestamp":"2025-10-02T19:24:54.050Z","uptime":63470}`
+      - 服务器信息: `{"name":"Cline for Cherry Studio MCP Server","version":"0.1.0","description":"MCP server providing Cline functionality for Cherry Studio","capabilities":["tools","file-operations","shell-commands","file-editing"]}`
+      - 工具调用: 成功测试 ping 工具，返回正确的 JSON-RPC 2.0 响应
+    - ✅ **日志系统**: 完整的请求日志和性能监控
+    - ✅ **错误处理**: 统一的错误处理和优雅关闭
+    - ✅ **TypeScript 编译**: 无错误，严格模式通过
 
 - [ ] **任务**: 实现核心文件操作工具。
   - **预期产出**: 实现 `read_file`, `write_file`, `list_files` 等基础工具。
