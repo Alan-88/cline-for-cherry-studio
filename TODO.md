@@ -22,10 +22,13 @@
 ## 🚀 阶段一：独立插件开发
 
 ### 1.1. 开发环境准备
-- [ ] **任务**: 创建新的 GitHub 仓库 `cline-for-cherry-studio`。
+- [x] **任务**: 创建新的 GitHub 仓库 `cline-for-cherry-studio`。
   - **预期产出**: 一个包含基础项目结构的新仓库。
   - **验证方法**: 仓库创建成功，包含 README.md 和基本目录结构。
   - **文档更新**: 在 `## 1.1` 下记录仓库地址和初始化过程。
+    - ✅ **2025-10-03 完成**: 成功创建 GitHub 仓库 https://github.com/Alan-88/cline-for-cherry-studio
+    - ✅ 已初始化本地 Git 仓库并推送初始文件（TODO.md 和 start_prompt.md）
+    - ✅ 仓库地址：https://github.com/Alan-88/cline-for-cherry-studio
 
 - [ ] **任务**: 深入研究 vscode-mcp-server 项目。
   - **预期产出**: 一份研究报告，包含关键代码片段和架构图。
